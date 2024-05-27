@@ -5,7 +5,6 @@ import { useOutletContext } from "react-router-dom";
 function ShoppingCart() {
   const { cartItems, removeFromCart } = useOutletContext();
 
-  console.log(cartItems)
   return (
     <div className="flex flex-col justify-center items-center px-8">
       <h2 className="text-2xl">Shopping Cart</h2>
