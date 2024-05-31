@@ -15,6 +15,6 @@ module.exports = (express, app) => {
     router.post("/", controller.create);
   
     // Add routes to server.
-    app.use("/api/users", router);
+    app.use("/api/products", router);
   };
   
