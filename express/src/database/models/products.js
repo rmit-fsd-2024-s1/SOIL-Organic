@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) =>
         allowNull: false
       }, 
       special: {
-        type: DataTypes.INTEGER(5),
+        type: DataTypes.BOOLEAN(1),
         allowNull: false
       }
     }, {
