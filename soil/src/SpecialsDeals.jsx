@@ -1,57 +1,121 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext } from "react";
 import Banana from "./img/banana.jpg";
 import Strawberry from "./img/strawberry.jpg";
 import Watermelon from "./img/watermelon.jpg";
 import Lemon from "./img/lemon.jpg";
 import Apple from "./img/apple.jpg";
 import Plum from "./img/plum.jpg";
-import { useOutletContext } from "react-router-dom";
+//import { useOutletContext } from "react-router-dom";
+import Profile from "./Profile";
+export const CartContext = createContext();
 const specials = [
   {
     item: "Organic Starwberry",
     price: "$12.90 per kg",
     sale: "$7.90 per kg",
     save: "$5.00",
+    quality: "10000",
   },
   {
     item: "Watermelon Seedless",
     price: "$7.50 per kg",
     sale: "$4.50 per kg",
     save: "$3.00",
+    quality: "10000",
   },
   {
     item: "Organic Bananas",
     price: "$7.90 per kg",
     sale: "$5.90 per kg",
     save: "$2.00",
+    quality: "10000",
   },
   {
     item: "Organic Lemon",
     price: "$10.90 per kg",
     sale: "$6.50 per kg",
     save: "$4.40",
+    quality: "10000",
   },
   {
     item: "Apple Pink Ladies",
     price: "$11.90 per kg",
     sale: "$6.90 per kg",
     save: "$5.00",
+    quality: "10000",
   },
   {
     item: "Plum Queen Garnet",
     price: "$9.30 per kg",
     sale: "$5.40 per kg",
     save: "$3.90",
+    quality: "10000",
   },
 ];
 
 function SpecialsDeals() {
-  const { addToCart } = useOutletContext();
+  const [cartItems, setCartItems] = useState([]);
+
   const Specials = () => {
+    // Define quantities state
+    const [quantities, setQuantities] = useState({});
+    // Define cartItems state
+    const [cartItems, setCartItems] = useState([]);
+    // Increase quantity function
+    const increaseQuantity = (item) => {
+      setQuantities((prevQuantities) => ({
+        ...prevQuantities,
+        [item]: (prevQuantities[item] || 0) + 1,
+      }));
+    };
+
+    // Decrease quantity function
+    const decreaseQuantity = (item) => {
+      setQuantities((prevQuantities) => ({
+        ...prevQuantities,
+        [item]: Math.max((prevQuantities[item] || 0) - 1, 0),
+      }));
+    };
+    // Add to cart function
+
+    const addToCart = (item) => {
+      const quantity = quantities[item.item] || 0;
+
+      if (quantity > 0) {
+        const newCartItem = {
+          item: item.item,
+          quantity: quantity,
+          price: item.sale,
+        };
+
+        setCartItems((prevCartItems) => [...prevCartItems, newCartItem]);
+        setQuantities((prevQuantities) => ({
+          ...prevQuantities,
+          [item.item]: 0,
+        }));
+      }
+    };
+
+    // Get the cart items from local storage
+    useEffect(() => {
+      // Store the cartItems in local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    }, [cartItems]);
+
+    // Get the cart items from local storage when the component mounts
+    useEffect(() => {
+      const savedCartItems = JSON.parse(localStorage.getItem("cartItems"));
+      if (savedCartItems) {
+        setCartItems(savedCartItems);
+      }
+    }, []);
+
     const [specialsData, setSpecialsData] = useState([]);
+    // Initialize state
 
     useEffect(() => {
       localStorage.setItem("specials", JSON.stringify(specials));
+
       const savedSpecials = JSON.parse(localStorage.getItem("specials"));
       if (savedSpecials) {
         setSpecialsData(savedSpecials);
@@ -169,12 +233,23 @@ function SpecialsDeals() {
                       Save {special.save}
                     </div>
                   </div>
-                  <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                    onClick={() => addToCart(special)}
-                  >
-                    Add to Cart
-                  </button>
+                  <div>
+                    <button
+                      onClick={() => addToCart(special)}
+                      className="bg-orange-400 text-white px-4 py-2 rounded mt-4"
+                    >
+                      Add to Cart
+                    </button>
+                    <div className="flex flex-row space-x-10 text-2xl">
+                      <button onClick={() => decreaseQuantity(special.item)}>
+                        -
+                      </button>
+                      <div>{quantities[special.item] || 0}</div>
+                      <button onClick={() => increaseQuantity(special.item)}>
+                        +
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -185,12 +260,14 @@ function SpecialsDeals() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center px-8 ">
-      <h1 className="flex justify-center text-3xl py-8">Specials Deals</h1>
-      <div className="flex flex-row justify-center items-center px-8 py-12 md: w-full">
-        <Specials />
+    <CartContext.Provider value={{ cartItems, setCartItems }}>
+      <div className="flex flex-col justify-center items-center px-8">
+        <h1 className="flex justify-center text-3xl py-8">Specials Deals</h1>
+        <div className="flex flex-row justify-center items-center px-8 py-12 md: w-full">
+          <Specials />
+        </div>
       </div>
-    </div>
+    </CartContext.Provider>
   );
 }
 
