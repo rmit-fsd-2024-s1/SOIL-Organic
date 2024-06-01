@@ -26,7 +26,7 @@ function ShoppingCart() {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center mt-8">
       <h2 className="text-2xl font-bold mb-4">Shopping Cart</h2>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>

@@ -7,7 +7,7 @@ import Plum from "./img/plum.jpg";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { specials } from "./SpecialsDeals";
-import sun from "./sun.jpeg";
+import sun from "./img/sun.jpeg";
 
 function WeekSpecials() {
   const [specialsData, setSpecialsData] = useState([]);
@@ -64,25 +64,17 @@ function WeekSpecials() {
                 <img src={Plum} alt="" className=" h-60" />
               )}
               <div className="flex flex-col justify-center">
-
-                <div className="flex justify-center py-3">
-                  {special.item}
-                </div>
+                <div className="flex justify-center py-3">{special.item}</div>
 
                 <div className="flex justify-center py-3">
                   <ul className="flex flex-row space-x-4">
-                    <li className="px-3 py-2">
-                      {special.sale}
-                    </li>
-                    <li className="line-through px-3 py-2">
-                      {special.price}
-                    </li>
+                    <li className="px-3 py-2">{special.sale}</li>
+                    <li className="line-through px-3 py-2">{special.price}</li>
                     <li className="bg-orange-400 px-3 py-2 rounded text-black">
                       Save {special.save}
                     </li>
                   </ul>
                 </div>
-                
               </div>
             </div>
           ))}
