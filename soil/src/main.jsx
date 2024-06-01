@@ -8,6 +8,7 @@ import Signup from "./Signup.jsx";
 import AuthPage from "./AuthPage.jsx";
 import Profile from "./Profile.jsx";
 import SpecialsDeals from "./SpecialsDeals.jsx";
+import { CartContext } from "./SpecialsDeals.jsx";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ShoppingCart from "./ShoppingCart.jsx";
@@ -15,7 +16,11 @@ import ShoppingCart from "./ShoppingCart.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <CartContext.Provider value={{ cartItems: [], setCartItems: () => {} }}>
+        <App />
+      </CartContext.Provider>
+    ),
     errorElement: <div>Not Found!</div>,
     children: [
       {
