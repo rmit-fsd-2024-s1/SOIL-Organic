@@ -2,7 +2,7 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import Account from "./img/my_account.png";
 import "./app.css";
-import sun from "./sun.jpeg";
+import sun from "./img/sun.jpeg";
 import { useState } from "react";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
               <img className="h-10 w-10 ml-2" src={sun} alt="Sun" />
             </Link>
           </li>
-          <div className="flex space-x-2">
+          <div className="flex items-center space-x-2">
             {user ? (
               <>
                 <li>
@@ -35,7 +35,10 @@ function App() {
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/cart"} className="hover:bg-zinc-600">
+                  <Link
+                    to={"/cart"}
+                    className="bg-[#eae2cf] px-3 rounded hover:bg-zinc-600 text-black "
+                  >
                     Shopping Cart
                   </Link>
                 </li>
@@ -51,7 +54,7 @@ function App() {
             ) : (
               <li>
                 <Link
-                  to={"/signup"}
+                  to={"/signin"}
                   className="bg-[#eae2cf] px-3 py-2 rounded hover:bg-zinc-600 text-black"
                 >
                   Sign In
@@ -61,8 +64,9 @@ function App() {
           </div>
         </ul>
       </header>
-
-      <Outlet />
+      <div className="flex-grow">
+        <Outlet />
+      </div>
 
       <footer className="h-8 flex items-center justify-center bg-orange-600 text-white">
         &copy;2024 SOIL

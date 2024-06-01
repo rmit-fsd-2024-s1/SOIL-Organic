@@ -1,7 +1,7 @@
 import React from "react";
 import Signin from "./Signin";
 import Signup from "./Signup";
-import sun from "./sun.jpeg";
+import sun from "./img/sun.jpeg";
 
 const AuthPage = () => {
   return (
@@ -13,12 +13,7 @@ const AuthPage = () => {
         </h1>
       </div>
       <div className="flex flex-col md:flex-row justify-center items-center">
-        <div className="md:w-1/2">
-          <Signin />
-        </div>
-        <div className="md:w-1/2">
-          <Signup />
-        </div>
+        <Signin />
       </div>
     </div>
   );
