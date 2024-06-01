@@ -1,6 +1,6 @@
 // ShoppingCart.jsx
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { CartContext } from "./SpecialsDeals";
 
 function ShoppingCart() {
@@ -25,12 +25,20 @@ function ShoppingCart() {
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
   };
 
+  // Load cart items from local storage when the component mounts
+  useEffect(() => {
+    const savedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    if (savedCartItems.length > 0) {
+      setCartItems(savedCartItems);
+    }
+  }, [setCartItems]);
+
   return (
     <div className="flex flex-col items-center mt-8">
       <h2 className="text-2xl font-bold mb-4">Shopping Cart</h2>
-      {cartItems.length === 0 ? (
+      {/* {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
-      ) : (
+      ) : ( */}
         <div className="w-full max-w-md">
           <p className="text-lg font-bold mb-2">Order ID: {orderId}</p>
           <table className="w-full text-left">
@@ -63,7 +71,7 @@ function ShoppingCart() {
             Total Price: ${totalPrice.toFixed(2)}
           </p>
         </div>
-      )}
+      {/* )} */}
     </div>
   );
 }
