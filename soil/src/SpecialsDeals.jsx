@@ -1,13 +1,13 @@
-import React, { useEffect, useState, createContext } from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 import Banana from "./img/banana.jpg";
 import Strawberry from "./img/strawberry.jpg";
 import Watermelon from "./img/watermelon.jpg";
 import Lemon from "./img/lemon.jpg";
 import Apple from "./img/apple.jpg";
 import Plum from "./img/plum.jpg";
-//import { useOutletContext } from "react-router-dom";
-import Profile from "./Profile";
+
 export const CartContext = createContext();
+
 const specials = [
   {
     item: "Organic Starwberry",
@@ -60,7 +60,9 @@ function SpecialsDeals() {
     // Define quantities state
     const [quantities, setQuantities] = useState({});
     // Define cartItems state
-    const [cartItems, setCartItems] = useState([]);
+    // const [cartItems, setCartItems] = useState([]);
+    // const { setCartItems } = useContext(CartContext);
+
     // Increase quantity function
     const increaseQuantity = (item) => {
       setQuantities((prevQuantities) => ({
@@ -88,7 +90,13 @@ function SpecialsDeals() {
           price: item.sale,
         };
 
-        setCartItems((prevCartItems) => [...prevCartItems, newCartItem]);
+        // setCartItems((prevCartItems) => [...prevCartItems, newCartItem]);
+        setCartItems((prevCartItems) => {
+          const updatedCartItems = [...prevCartItems, newCartItem];
+          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+          return updatedCartItems;
+        })
+
         setQuantities((prevQuantities) => ({
           ...prevQuantities,
           [item.item]: 0,
@@ -96,19 +104,19 @@ function SpecialsDeals() {
       }
     };
 
-    // Get the cart items from local storage
-    useEffect(() => {
-      // Store the cartItems in local storage
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    }, [cartItems]);
+    // // Get the cart items from local storage
+    // useEffect(() => {
+    //   // Store the cartItems in local storage
+    //   localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    // }, [cartItems]);
 
-    // Get the cart items from local storage when the component mounts
-    useEffect(() => {
-      const savedCartItems = JSON.parse(localStorage.getItem("cartItems"));
-      if (savedCartItems) {
-        setCartItems(savedCartItems);
-      }
-    }, []);
+    // // Get the cart items from local storage when the component mounts
+    // useEffect(() => {
+    //   const savedCartItems = JSON.parse(localStorage.getItem("cartItems"));
+    //   if (savedCartItems) {
+    //     setCartItems(savedCartItems);
+    //   }
+    // }, []);
 
     const [specialsData, setSpecialsData] = useState([]);
     // Initialize state
