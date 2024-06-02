@@ -4,7 +4,7 @@ import Account from "./img/my_account.png";
 import "./app.css";
 import sun from "./img/sun.jpeg";
 import { useState, useEffect } from "react";
-import { CartContext } from "./SpecialsDeals";  
+import { CartContext } from "./SpecialsDeals";
 
 function App() {
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ function App() {
   };
 
   const [cartItems, setCartItems] = useState([]);
+  const [cartUpdated, setCartUpdated] = useState(false);
 
   // Get the cart items from local storage when the component mounts
   useEffect(() => {
@@ -31,6 +32,13 @@ function App() {
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  useEffect(() => {
+    const savedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    if (savedCartItems.length > 0) {
+      setCartItems(savedCartItems);
+    }
+  }, [setCartItems, cartUpdated]);
 
   return (
     <CartContext.Provider value={{ cartItems, setCartItems }}>

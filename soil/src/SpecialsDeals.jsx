@@ -58,10 +58,14 @@ function SpecialsDeals() {
 
   const Specials = () => {
     // Define quantities state
+    const [cartItems, setCartItems] = useState(() => {
+      const storedCartItems = localStorage.getItem("cartItems");
+      return storedCartItems ? JSON.parse(storedCartItems) : [];
+    });
     const [quantities, setQuantities] = useState({});
-    // Define cartItems state
-    // const [cartItems, setCartItems] = useState([]);
-    // const { setCartItems } = useContext(CartContext);
+    useEffect(() => {
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    }, [cartItems]);
 
     // Increase quantity function
     const increaseQuantity = (item) => {
@@ -78,8 +82,8 @@ function SpecialsDeals() {
         [item]: Math.max((prevQuantities[item] || 0) - 1, 0),
       }));
     };
-    // Add to cart function
 
+    // Add to cart function
     const addToCart = (item) => {
       const quantity = quantities[item.item] || 0;
 
@@ -89,38 +93,33 @@ function SpecialsDeals() {
           quantity: quantity,
           price: item.sale,
         };
-
-        // setCartItems((prevCartItems) => [...prevCartItems, newCartItem]);
         setCartItems((prevCartItems) => {
-          const updatedCartItems = [...prevCartItems, newCartItem];
-          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-          return updatedCartItems;
-        })
+          // Check if the item already exists in the cart
+          const existingItemIndex = prevCartItems.findIndex(
+            (cartItem) => cartItem.item === newCartItem.item
+          );
 
-        setQuantities((prevQuantities) => ({
-          ...prevQuantities,
-          [item.item]: 0,
-        }));
+          // If the item already exists in the cart, update the quantity
+          if (existingItemIndex !== -1) {
+            const updatedCartItems = [...prevCartItems];
+            updatedCartItems[existingItemIndex].quantity +=
+              newCartItem.quantity;
+            return updatedCartItems;
+          } else {
+            return [...prevCartItems, newCartItem];
+          }
+        });
       }
+      alert("Item added to cart!");
     };
-
-    // // Get the cart items from local storage
-    // useEffect(() => {
-    //   // Store the cartItems in local storage
-    //   localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    // }, [cartItems]);
-
-    // // Get the cart items from local storage when the component mounts
-    // useEffect(() => {
-    //   const savedCartItems = JSON.parse(localStorage.getItem("cartItems"));
-    //   if (savedCartItems) {
-    //     setCartItems(savedCartItems);
-    //   }
-    // }, []);
+    // Save cartItems to local storage whenever it changes
+    useEffect(() => {
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    }, [cartItems]);
 
     const [specialsData, setSpecialsData] = useState([]);
-    // Initialize state
 
+    // Initialize state
     useEffect(() => {
       localStorage.setItem("specials", JSON.stringify(specials));
 
@@ -248,6 +247,7 @@ function SpecialsDeals() {
                     >
                       Add to Cart
                     </button>
+
                     <div className="flex flex-row space-x-10 text-2xl">
                       <button onClick={() => decreaseQuantity(special.item)}>
                         -
