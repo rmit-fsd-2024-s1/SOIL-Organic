@@ -18,7 +18,6 @@ function App() {
   };
 
   const [cartItems, setCartItems] = useState([]);
-  const [cartUpdated, setCartUpdated] = useState(false);
 
   // Get the cart items from local storage when the component mounts
   useEffect(() => {
@@ -29,16 +28,16 @@ function App() {
   }, []);
 
   // Store the cartItems in local storage whenever cartItems changes
-  useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  }, [cartItems]);
+  // useEffect(() => {
+  //   localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  // }, [cartItems]);
 
-  useEffect(() => {
-    const savedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-    if (savedCartItems.length > 0) {
-      setCartItems(savedCartItems);
-    }
-  }, [setCartItems, cartUpdated]);
+  // useEffect(() => {
+  //   const savedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  //   if (savedCartItems.length > 0) {
+  //     setCartItems(savedCartItems);
+  //   }
+  // }, [setCartItems, cartUpdated]);
 
   return (
     <CartContext.Provider value={{ cartItems, setCartItems }}>
