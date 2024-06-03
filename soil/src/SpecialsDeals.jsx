@@ -59,9 +59,6 @@ function SpecialsDeals() {
   const Specials = () => {
     // Define quantities state
     const [quantities, setQuantities] = useState({});
-    // Define cartItems state
-    // const [cartItems, setCartItems] = useState([]);
-    // const { setCartItems } = useContext(CartContext);
 
     // Increase quantity function
     const increaseQuantity = (item) => {
@@ -103,20 +100,6 @@ function SpecialsDeals() {
         }));
       }
     };
-
-    // // Get the cart items from local storage
-    // useEffect(() => {
-    //   // Store the cartItems in local storage
-    //   localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    // }, [cartItems]);
-
-    // // Get the cart items from local storage when the component mounts
-    // useEffect(() => {
-    //   const savedCartItems = JSON.parse(localStorage.getItem("cartItems"));
-    //   if (savedCartItems) {
-    //     setCartItems(savedCartItems);
-    //   }
-    // }, []);
 
     const [specialsData, setSpecialsData] = useState([]);
     // Initialize state
