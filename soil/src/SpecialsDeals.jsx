@@ -58,6 +58,14 @@ function SpecialsDeals() {
 
   const Specials = () => {
     // Define quantities state
+    const [cartItems, setCartItems] = useState(() => {
+      const storedCartItems = localStorage.getItem("cartItems");
+      return storedCartItems ? JSON.parse(storedCartItems) : [];
+    });
+
+    useEffect(() => {
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    }, [cartItems]);
     const [quantities, setQuantities] = useState({});
 
     // Increase quantity function
@@ -75,35 +83,41 @@ function SpecialsDeals() {
         [item]: Math.max((prevQuantities[item] || 0) - 1, 0),
       }));
     };
-    // Add to cart function
 
     const addToCart = (item) => {
       const quantity = quantities[item.item] || 0;
 
       if (quantity > 0) {
-        const newCartItem = {
-          item: item.item,
-          quantity: quantity,
-          price: item.sale,
-        };
-
-        // setCartItems((prevCartItems) => [...prevCartItems, newCartItem]);
         setCartItems((prevCartItems) => {
-          const updatedCartItems = [...prevCartItems, newCartItem];
-          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-          return updatedCartItems;
-        })
+          const existingItemIndex = prevCartItems.findIndex(
+            (cartItem) => cartItem.item === item.item
+          );
+
+          if (existingItemIndex !== -1) {
+            const updatedCartItems = [...prevCartItems];
+            updatedCartItems[existingItemIndex].quantity += quantity;
+            return updatedCartItems;
+          } else {
+            const newCartItem = {
+              item: item.item,
+              quantity,
+              price: item.sale,
+            };
+            return [...prevCartItems, newCartItem];
+          }
+        });
 
         setQuantities((prevQuantities) => ({
           ...prevQuantities,
           [item.item]: 0,
         }));
+
+        alert("Item added to cart!");
       }
     };
-
     const [specialsData, setSpecialsData] = useState([]);
-    // Initialize state
 
+    // Initialize state
     useEffect(() => {
       localStorage.setItem("specials", JSON.stringify(specials));
 
@@ -231,6 +245,7 @@ function SpecialsDeals() {
                     >
                       Add to Cart
                     </button>
+
                     <div className="flex flex-row space-x-10 text-2xl">
                       <button onClick={() => decreaseQuantity(special.item)}>
                         -
