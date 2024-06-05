@@ -17,6 +17,7 @@ function App() {
     navigate("/");
   };
 
+  // Define cartItems state
   const [cartItems, setCartItems] = useState([]);
 
   // Get the cart items from local storage when the component mounts

@@ -1,10 +1,11 @@
 // Profile.jsx
 import React, { useState, useEffect } from 'react';
-import { hashPassword } from './utils/hashPassword';
+// import { hashPassword } from './utils/hashPassword';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Profile() {
-    const [user, setUser] = useState('');
+    const [user, setUser] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -12,93 +13,88 @@ function Profile() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [joinDate, setJoinDate] = useState('');
     const [error, setError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
-        const userData = JSON.parse(localStorage.getItem('user'));
-        if (userData) {
-            setName(userData.name);
-            setEmail(userData.email);
-            setPassword(userData.password);
-            setJoinDate(userData.joinDate);
-        } else{
-            <p>This user is not found!</p>
-        }
+        //Fetch user details from API
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get('/api/users/profile'); // Ensure this endpoint returns the logged-in user's data
+                const userData = response.data;
+                setUser(userData);
+                setName(userData.name);
+                setEmail(userData.email);
+                setJoinDate(userData.joinDate);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                setError('Failed to load user data.');
+            }
+        };
+        fetchUser();
     }, []);
 
     // User can edit their name, email and password
     const handleEdit = () => {
         setIsEditing(true);
-        const savedEdit = () => {
-            setName(user.name);
-            setEmail(user.email);
-            setPassword(user.password);
-            setConfirmPassword(user.confirmPassword);
-        }
-        localStorage.setItem('savedEdit', JSON.stringify(savedEdit));
     };
 
-    // Delete user's account
-    const handleDelete = () => {
-        localStorage.clear('user');
-        alert('Your account deleted successfully!');
-        
-        // Redirect to home page
-        navigate("/");
+    // Delete user's account via API
+    const handleDelete = async () => {
+        try {
+            await axios.delete('/api/users/${user.user_id}'); // Ensure this endpoint deletes the logged-in user's account
+            localStorage.removeItem('user');
+            alert('Your account has been deleted successfully!');
+            navigate("/");
+        } catch (error) {
+            console.error('Error deleting account:', error);
+            setError('Failed to delete account.');
+        }
     };
 
     // Cancle edit form
     const handleCancle = () =>{
         setIsEditing(false);
-    }
+        setError("");
+        setSuccessMessage("");
+    };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            if (!emailRegex.test(email)) {
-                setError("Invalid email format.");
-                return;
-            }
+        if (password !== confirmPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
 
         // Hash the password
-        const strongPasswordRegex =
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-            if (!strongPasswordRegex.test(password)) {
-                setError(
-                    "Please enter a strong password. It must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character."
-                );
-                return;
-            }
+        // Ensure hashPassword function is implemented
+        const hashedPassword = password;
 
-        const hashedPassword = hashPassword(password);
-
-        // Updated in LocalStorage
+        // Updated user data
         const updatedUser = {
             name,
             email,
             password: hashedPassword,
-            joinDate,
-            confirmPassword,
+            // joinDate,
         };
 
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        const newUsers = users.filter((user) => user.email !== email);
-        newUsers.push(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-        localStorage.setItem("users", JSON.stringify(newUsers));
-
-        // Reset the form firlds
-        setName(updatedUser.name);
-        setEmail(updatedUser.email);
-        setPassword(updatedUser.password);
-        setConfirmPassword("");
-        if (confirmPassword === password){
-            alert('User is updated successfully!');
+        // Send updated data to API
+        // Ensure this endpoint updates the logged-in user's data
+        try {
+            const response = await axios.put('/api/users/${user.user_id}', updatedUser);
+            setUser(response.data);
+            localStorage.setItem('user', JSON.stringify(response.data));
+            setSuccessMessage("Profile updated successfully!");
             setIsEditing(false);
-        } else{
-            setError("Password is not comfirm!");
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            setError('Failed to update profile.');
         }
+    };
+
+    if (!user) {
+        return <p>Loading...</p>;
     }
 
     return (
@@ -107,6 +103,8 @@ function Profile() {
                 <h2 className='text-2xl text-orange-600'>
                     <strong>{name}'s Profile</strong>
                 </h2>
+                {successMessage && <p className="text-green-500">{successMessage}</p>}
+                {error && <p className="text-red-500">{error}</p>}
                 <form className='flex flex-col mt-8'>
                     <div className='py-2'>
                        <label>Name: {name}</label> 
@@ -168,7 +166,6 @@ function Profile() {
                                     </input>
                                 </label>
                             </div>
-                            {error && <p className="font-bond text-orange-700">{error}</p>}
                             <br></br>
                             <div className='flex justify-center space-x-4'>
                                 <button 
@@ -177,7 +174,8 @@ function Profile() {
                                 >
                                     Save
                                 </button>
-                                <button 
+                                <button
+                                    type='button' 
                                     onClick={handleCancle} 
                                     className="hover:bg-orange-500 bg-orange-400 text-white px-6 py-3 rounded w-full"
                                 >

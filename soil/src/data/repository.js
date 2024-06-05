@@ -1,5 +1,5 @@
 import axios from "axios";
-const {User} = require('./database');
+// const {User} = require('./database');
 
 // --- Constants
 const API_HOST = "http://localhost:4000";
@@ -29,21 +29,23 @@ async function createUser(user) {
 }
 
 // --- Products
-async function getItems(){
-  const response = await axios.get(API_HOST + "/api/products");
+async function getStandardProducts() {
+  const response = await axios.get(API_HOST + "/api/products/standard");
+  return response.data;
+}
 
+async function getSpecialProducts() {
+  const response = await axios.get(API_HOST + "/api/products/special");
   return response.data;
 }
 
 async function findItem(item_id){
   const response = await axios.get(API_HOST + `/api/products/select/${item_id}`);
-
   return response.data;
 }
 
 async function createItem(){
   const response = await axios.post(API_HOST + "/api/products", product);
-
   return response.data;
 }
 
@@ -78,7 +80,7 @@ async function removeUser() {
 
 export {
   verifyUser, findUser, createUser,
-  getItems, findItem, createItem,
+  getSpecialProducts, getStandardProducts, findItem, createItem,
   getPosts, createPost,
   getUser, removeUser, setUser
 }
