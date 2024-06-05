@@ -9,14 +9,38 @@ module.exports = (sequelize, DataTypes) =>
         type: DataTypes.STRING(32),
         allowNull: false
       },
-      quantity: {
-        type: DataTypes.STRING(200),
+      image: {
+        type: DataTypes.STRING, 
+        allowNull: true,
+      },
+      description: {
+        type: DataTypes.TEXT, 
+        allowNull: true,
+      },
+      price: {
+        type: DataTypes.FLOAT,
         allowNull: false
-      }, 
-      special: {
-        type: DataTypes.BOOLEAN(1),
+      },
+      sale_price: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+      },
+      save_price: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+      },
+      quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      type: {
+        type: DataTypes.ENUM('standard', 'special'),
         allowNull: false
       }
+      // special: {
+      //   type: DataTypes.BOOLEAN(1),
+      //   allowNull: false
+      // }
     }, {
       // Don't add the timestamp attributes (updatedAt, createdAt).
       timestamps: false
