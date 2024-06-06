@@ -12,7 +12,7 @@
 
 # GitHub Link
 
-- github: [https://github.com/rmit-fsd-2024-s1/s3998240-s3958268-a1.git](https://github.com/rmit-fsd-2024-s1/s3998240-s3958268-a1.git)
+- github: [[https://github.com/rmit-fsd-2024-s1/s3998240-s3958268-a2.git](https://github.com/rmit-fsd-2024-s1/s3998240-s3958268-a2.git)]
 
 # Installation
  1. Clone the repository.
