@@ -9,7 +9,7 @@ function SpecialsDeals() {
   const [standardProducts, setStandardProducts] = useState([]);
   const [specialProducts, setSpecialProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
-  
+
   // Define quantities state
   const [cartItems, setCartItems] = useState(() => {
     const storedCartItems = localStorage.getItem("cartItems");
@@ -21,22 +21,20 @@ function SpecialsDeals() {
       try {
         const standardProducts = await getStandardProducts();
         setStandardProducts(standardProducts);
-        
+
         const specialProducts = await getSpecialProducts();
         setSpecialProducts(specialProducts);
       } catch (error) {
-        console.error('Error fetching products:', error);
-
+        console.error("Error fetching products:", error);
       }
-      alert("Item added to cart!");
     };
-    
+
     fetchProducts();
   }, []);
 
   // Update localStorage whenever cartItems or quantities change
   useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
     // localStorage.setItem('quantities', JSON.stringify(quantities));
   }, [cartItems]);
 
@@ -47,7 +45,7 @@ function SpecialsDeals() {
       [item.item_name]: (prevQuantities[item.item_name] || 0) + 1,
     }));
   };
-  
+
   // Decrease quantity function
   const decreaseQuantity = (item) => {
     setQuantities((prevQuantities) => ({
@@ -86,7 +84,7 @@ function SpecialsDeals() {
 
       alert("Item added to cart!");
     }
-  }
+  };
 
   return (
     <CartContext.Provider value={{ cartItems, setCartItems }}>
@@ -96,8 +94,15 @@ function SpecialsDeals() {
           <div className="flex flex-col items-center">
             <div className="grid grid-cols-2 gap-4">
               {standardProducts.map((product) => (
-                <div key={product.item_name} className="flex flex-col items-center">
-                  <img src={product.image} alt={product.item_name} className="h-60 w-80"/>
+                <div
+                  key={product.item_name}
+                  className="flex flex-col items-center"
+                >
+                  <img
+                    src={product.image}
+                    alt={product.item_name}
+                    className="h-60 w-80"
+                  />
                   <div className="flex justify-center text-2xl py-2 text-blond">
                     {product.item_name}
                   </div>
@@ -110,22 +115,25 @@ function SpecialsDeals() {
                     Add to Cart
                   </button>
                   <div className="flex flex-row space-x-10 text-2xl">
-                      <button onClick={() => decreaseQuantity(product)}>
-                        -
-                      </button>
-                      <div>{quantities[product.item_name] || 0}</div>
-                      <button onClick={() => increaseQuantity(product)}>
-                        +
-                      </button>
-                    </div>
+                    <button onClick={() => decreaseQuantity(product)}>-</button>
+                    <div>{quantities[product.item_name] || 0}</div>
+                    <button onClick={() => increaseQuantity(product)}>+</button>
+                  </div>
                 </div>
               ))}
             </div>
             <h2 className="text-2xl py-4">Special Products</h2>
             <div className="grid grid-cols-2 gap-4">
               {specialProducts.map((product) => (
-                <div key={product.item_name} className="flex flex-col items-center">
-                  <img src={product.image} alt={product.item_name} className="h-60 w-80"/>
+                <div
+                  key={product.item_name}
+                  className="flex flex-col items-center"
+                >
+                  <img
+                    src={product.image}
+                    alt={product.item_name}
+                    className="h-60 w-80"
+                  />
                   <div className="flex flex-col justify-center">
                     <div className="flex justify-center text-2xl py-2 text-blond">
                       {product.item_name}
@@ -133,9 +141,7 @@ function SpecialsDeals() {
                     <p>{product.description}</p>
                     <div className="flex justify-center py-3">
                       <ul className="flex flex-row space-x-4 items-center">
-                        <li className="px-3 py-2">
-                          ${product.sale_price}
-                        </li>
+                        <li className="px-3 py-2">${product.sale_price}</li>
                         <li className="line-through px-3 py-2">
                           ${product.price}
                         </li>
@@ -152,13 +158,9 @@ function SpecialsDeals() {
                     Add to Cart
                   </button>
                   <div className="flex flex-row space-x-10 text-2xl">
-                      <button onClick={() => decreaseQuantity(product)}>
-                        -
-                      </button>
-                      <div>{quantities[product.item_name] || 0}</div>
-                      <button onClick={() => increaseQuantity(product)}>
-                        +
-                      </button>
+                    <button onClick={() => decreaseQuantity(product)}>-</button>
+                    <div>{quantities[product.item_name] || 0}</div>
+                    <button onClick={() => increaseQuantity(product)}>+</button>
                   </div>
                 </div>
               ))}
@@ -172,68 +174,66 @@ function SpecialsDeals() {
 
 export default SpecialsDeals;
 
-
-
 // function SpecialsDeals() {
 //   const [cartItems, setCartItems] = useState([]);
 
 //   const Specials = () => {
-    // // Define quantities state
-    // const [cartItems, setCartItems] = useState(() => {
-    //   const storedCartItems = localStorage.getItem("cartItems");
-    //   return storedCartItems ? JSON.parse(storedCartItems) : [];
-    // });
+// // Define quantities state
+// const [cartItems, setCartItems] = useState(() => {
+//   const storedCartItems = localStorage.getItem("cartItems");
+//   return storedCartItems ? JSON.parse(storedCartItems) : [];
+// });
 
-    // useEffect(() => {
-    //   localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    // }, [cartItems]);
-    // const [quantities, setQuantities] = useState({});
+// useEffect(() => {
+//   localStorage.setItem("cartItems", JSON.stringify(cartItems));
+// }, [cartItems]);
+// const [quantities, setQuantities] = useState({});
 
-    // // Increase quantity function
-    // const increaseQuantity = (item) => {
-    //   setQuantities((prevQuantities) => ({
-    //     ...prevQuantities,
-    //     [item]: (prevQuantities[item] || 0) + 1,
-    //   }));
-    // };
+// // Increase quantity function
+// const increaseQuantity = (item) => {
+//   setQuantities((prevQuantities) => ({
+//     ...prevQuantities,
+//     [item]: (prevQuantities[item] || 0) + 1,
+//   }));
+// };
 
-    // // Decrease quantity function
-    // const decreaseQuantity = (item) => {
-    //   setQuantities((prevQuantities) => ({
-    //     ...prevQuantities,
-    //     [item]: Math.max((prevQuantities[item] || 0) - 1, 0),
-    //   }));
-    // };
+// // Decrease quantity function
+// const decreaseQuantity = (item) => {
+//   setQuantities((prevQuantities) => ({
+//     ...prevQuantities,
+//     [item]: Math.max((prevQuantities[item] || 0) - 1, 0),
+//   }));
+// };
 
-    // const addToCart = (item) => {
-    //   const quantity = quantities[item.item] || 0;
+// const addToCart = (item) => {
+//   const quantity = quantities[item.item] || 0;
 
-    //   if (quantity > 0) {
-    //     setCartItems((prevCartItems) => {
-    //       const existingItemIndex = prevCartItems.findIndex(
-    //         (cartItem) => cartItem.item === item.item
-    //       );
+//   if (quantity > 0) {
+//     setCartItems((prevCartItems) => {
+//       const existingItemIndex = prevCartItems.findIndex(
+//         (cartItem) => cartItem.item === item.item
+//       );
 
-          // if (existingItemIndex !== -1) {
-          //   const updatedCartItems = [...prevCartItems];
-          //   updatedCartItems[existingItemIndex].quantity += quantity;
-          //   return updatedCartItems;
-          // } else {
-          //   const newCartItem = {
-          //     item: item.item,
-          //     quantity,
-          //     price: item.sale,
-          //   };
-          //   return [...prevCartItems, newCartItem];
-          // }
-    //     });
+// if (existingItemIndex !== -1) {
+//   const updatedCartItems = [...prevCartItems];
+//   updatedCartItems[existingItemIndex].quantity += quantity;
+//   return updatedCartItems;
+// } else {
+//   const newCartItem = {
+//     item: item.item,
+//     quantity,
+//     price: item.sale,
+//   };
+//   return [...prevCartItems, newCartItem];
+// }
+//     });
 
-    //     setQuantities((prevQuantities) => ({
-    //       ...prevQuantities,
-    //       [item.item]: 0,
-    //     }));
+//     setQuantities((prevQuantities) => ({
+//       ...prevQuantities,
+//       [item.item]: 0,
+//     }));
 
-    //     alert("Item added to cart!");
+//     alert("Item added to cart!");
 //       }
 //     };
 //     const [specialsData, setSpecialsData] = useState([]);
@@ -367,15 +367,15 @@ export default SpecialsDeals;
 //                       Add to Cart
 //                     </button>
 
-                    // <div className="flex flex-row space-x-10 text-2xl">
-                    //   <button onClick={() => decreaseQuantity(special.item)}>
-                    //     -
-                    //   </button>
-                    //   <div>{quantities[special.item] || 0}</div>
-                    //   <button onClick={() => increaseQuantity(special.item)}>
-                    //     +
-                    //   </button>
-                    // </div>
+// <div className="flex flex-row space-x-10 text-2xl">
+//   <button onClick={() => decreaseQuantity(special.item)}>
+//     -
+//   </button>
+//   <div>{quantities[special.item] || 0}</div>
+//   <button onClick={() => increaseQuantity(special.item)}>
+//     +
+//   </button>
+// </div>
 //                   </div>
 //                 </div>
 //               </div>
