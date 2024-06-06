@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+// Desc: Signup component for the application
 import { useNavigate } from "react-router-dom";
-import { hashPassword } from "./utils/hashPassword";
+import React, { useState } from "react";
+import { createUser, findByEmail } from "./data/repository";
 import sun from "./img/sun.jpeg";
+
 function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate inputs
@@ -31,7 +32,6 @@ function Signup() {
       return;
     }
 
-    // Hash the password
     const strongPasswordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!strongPasswordRegex.test(password)) {
@@ -41,30 +41,34 @@ function Signup() {
       return;
     }
 
-    const hashedPassword = hashPassword(password);
+    try {
+      // Check if user already exists
+      const existingUser = await findByEmail(email);
+      if (existingUser) {
+        setError("User already exists.");
+        return;
+      }
 
-    // Get the current date
-    const joinDate = new Date().toISOString();
+      // Get the current date
+      const joinDate = new Date().toISOString();
 
-    // Save user details in localStorage
-    const user = { name, email, password: hashedPassword, joinDate };
+      // Create user in the database
+      const user = await createUser({
+        username: name,
+        email,
+        password, // Send the plain password; the API will hash it
+        date_of_joining: joinDate,
+      });
+      localStorage.setItem("user", JSON.stringify({ email: user.email }));
 
-    const usersInStorage = localStorage.getItem("users") || "[]";
-    const users = JSON.parse(usersInStorage);
-    if (users.find((e) => e.email == user.email)) {
-      alert("User already exists.");
-      return;
+      // Provide visual cue upon successful registration
+      alert("Registration successful! You are now logged in.");
+
+      // Redirect to profile page
+      navigate("/profile");
+    } catch (error) {
+      setError("An error occurred while creating the user.");
     }
-    users.push(user);
-
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("user", JSON.stringify(user));
-
-    // Provide visual cue upon successful registration
-    alert("Registration successful! You are now logged in.");
-
-    // Redirect to profile page
-    navigate("/profile");
   };
 
   return (
@@ -104,7 +108,7 @@ function Signup() {
             <div>
               <label htmlFor="newpassword">Password:</label>
               <input
-                type="text"
+                type="password"
                 id="newpassword"
                 className="mt-1 block w-full rounded-md bg-gray-200 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                 value={password}
@@ -114,14 +118,14 @@ function Signup() {
             <div>
               <label htmlFor="confirmPassword">Confirm Password:</label>
               <input
-                type="text"
+                type="password"
                 id="confirmPassword"
                 className="mt-1 block w-full rounded-md bg-gray-200 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
-            {error && <p className="font-bond text-orange-700">{error}</p>}
+            {error && <p className="font-bold text-orange-700">{error}</p>}
             <br></br>
             <button
               type="submit"
