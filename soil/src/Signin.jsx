@@ -1,4 +1,4 @@
-//Signin page for users to login to their account
+// Signin.jsx
 import React, { useState } from "react";
 import { verifyUser } from "./data/repository";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ function Signin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 

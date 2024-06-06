@@ -39,8 +39,19 @@ async function updateUser(userEmail, user) {
   }
 }
 
+// async function deleteUser(userEmail) {
+//   try {
+//     const response = await axios.delete(`${API_HOST}/api/users/${userEmail}`);
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error deleting user:', error);
+//     throw error;
+//   }
+// }
+// repository.js
 async function deleteUser(userEmail) {
   try {
+    console.log("Sending delete request for email:", userEmail); // Log the request being sent
     const response = await axios.delete(`${API_HOST}/api/users/${userEmail}`);
     return response.data;
   } catch (error) {
@@ -48,6 +59,7 @@ async function deleteUser(userEmail) {
     throw error;
   }
 }
+
 
 async function createUser(user) {
   try {
