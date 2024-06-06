@@ -25,7 +25,6 @@ exports.one = async (req, res) => {
   }
 };
 
-
 // Select one user from the database if email and password are a match.
 exports.login = async (req, res) => {
   try {
@@ -72,9 +71,7 @@ exports.create = async (req, res) => {
   }
 };
 
-
-
-
+// Find user by email
 exports.findByEmail = async (req, res) => {
   try {
     const email = req.query.email;
@@ -93,8 +90,7 @@ exports.findByEmail = async (req, res) => {
   }
 };
 
-
-
+// update user details
 exports.update = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -116,6 +112,7 @@ exports.update = async (req, res) => {
   }
 };
 
+// Delete user
 exports.delete = async (req, res) => {
   try {
     const user = await db.User.findOne({ where: { email: req.params.email } });
@@ -128,6 +125,5 @@ exports.delete = async (req, res) => {
   } catch (error) {
     console.error('Error deleting user:', error);
     res.status(500).json({ error: 'An error occurred while deleting the user.' });
-
   }
 };

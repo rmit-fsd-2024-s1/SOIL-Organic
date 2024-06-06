@@ -50,13 +50,13 @@ function ShoppingCart() {
       [item.item_name]: (prevQuantities[item.item_name] || 0) + 1,
     }));
     
-    setCartItems((prevCartItems) => {
-      return prevCartItems.map(cartItem =>
-        cartItem.id === item.id
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem
-      );
-    });
+    // setCartItems((prevCartItems) => {
+    //   return prevCartItems.map(cartItem =>
+    //     cartItem.id === item.id
+    //       ? { ...cartItem, quantity: cartItem.quantity + 1 }
+    //       : cartItem
+    //   );
+    // });
   };
   
   // Decrease quantity function
@@ -73,13 +73,13 @@ function ShoppingCart() {
       };
     });
 
-    setCartItems((prevCartItems) => {
-      return prevCartItems.map(cartItem =>
-        cartItem.item_name === item.item_name && cartItem.quantity > 1
-          ? { ...cartItem, quantity: cartItem.quantity - 1 }
-          : cartItem
-      ).filter(cartItem => cartItem.quantity > 0);
-    });
+    // setCartItems((prevCartItems) => {
+    //   return prevCartItems.map(cartItem =>
+    //     cartItem.item_name === item.item_name && cartItem.quantity > 1
+    //       ? { ...cartItem, quantity: cartItem.quantity - 1 }
+    //       : cartItem
+    //   ).filter(cartItem => cartItem.quantity > 0);
+    // });
     // setQuantities((prevQuantities) => ({
     //   ...prevQuantities,
     //   [item.item_name]: Math.max((prevQuantities[item.item_name] || 0) - 1, 0),
@@ -112,13 +112,15 @@ function ShoppingCart() {
 
   return (
     <div className="flex flex-col items-center mt-8">
-      <Link to={"/specialsDeals"}>
-        <span>Go back</span>
-      </Link>
-      <h2 className="flex text-2xl font-bold mb-4 ">
-        <span>Shopping Cart</span>
-        <img className="h-10 w-10 ml-2" src={sun} alt="Sun" />
-      </h2>
+      <div className="flex flex-row">
+        <Link to={"/specialsDeals"}>
+          <span>Go back</span>
+        </Link>
+        <h2 className="flex text-2xl font-bold mb-4 ">
+          <span>Shopping Cart</span>
+          <img className="h-10 w-10 ml-2" src={sun} alt="Sun" />
+        </h2>
+      </div>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
@@ -163,6 +165,14 @@ function ShoppingCart() {
         <p className="text-lg font-bold mt-4">
           Total Price: ${totalPrice.toFixed(2)}
         </p>
+        <div>
+          <button>
+            Cancle
+          </button>
+          <button>
+            Submit
+          </button>
+        </div>
       </div>
       )}
     </div>

@@ -5,7 +5,6 @@ import axios from "axios";
 const API_HOST = "http://localhost:4000";
 
 // --- User
-
 async function verifyUser(email, password) {
   try {
     const response = await axios.get(`${API_HOST}/api/users/login`, { params: { email, password } });
@@ -29,8 +28,6 @@ async function findByEmail(email) {
     throw error;
   }
 }
-
-
 
 async function updateUser(userEmail, user) {
   try {
@@ -62,9 +59,7 @@ async function createUser(user) {
   }
 }
 
-
 // --- Products
-
 async function getStandardProducts() {
   const response = await axios.get(API_HOST + "/api/products/standard");
   return response.data;
@@ -72,7 +67,6 @@ async function getStandardProducts() {
 
 async function getSpecialProducts() {
   const response = await axios.get(API_HOST + "/api/products/special");
-
   return response.data;
 }
 
@@ -103,7 +97,6 @@ async function setUser(user) {
   return response.data;
 }
 
-
 async function getUser(email) {
   try {
     const response = await axios.get(`${API_HOST}/api/users/email`, { params: { email } });
@@ -114,18 +107,36 @@ async function getUser(email) {
   }
 }
 
+// --- Cart
+async function getAllOrders() {
+  const response = await axios.get(`${API_HOST}/api/carts`);
+  return response.data;
+}
 
+async function getUserOrders(userEmail) {
+  const response = await axios.get(`${API_HOST}/api/carts/user/${userEmail}`);
+  return response.data;
+}
 
+async function createOrder(order) {
+  const response = await axios.post(`${API_HOST}/api/carts`, order);
+  return response.data;
+}
 
+async function deleteOrder(orderId) {
+  const response = await axios.delete(`${API_HOST}/api/carts/${orderId}`);
+  return response.data;
+}
 
+async function getOrder(orderId) {
+  const response = await axios.get(`${API_HOST}/api/carts/${orderId}`);
+  return response.data;
+}
 
 export {
-
   verifyUser, updateUser, deleteUser,findByEmail, createUser,
-  
-
   getSpecialProducts, getStandardProducts, findItem, createItem,
-
   getPosts, createPost,
-  getUser, setUser
+  getUser, setUser,
+  getAllOrders, getUserOrders, createOrder, deleteOrder, getOrder
 }
