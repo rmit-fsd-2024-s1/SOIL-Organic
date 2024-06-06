@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "./SpecialsDeals";
 import { Link } from "react-router-dom";
 import sun from "./img/sun.jpeg";
+import axios from "axios";
 
 function ShoppingCart() {
   const { cartItems, setCartItems } = useContext(CartContext);
@@ -13,7 +14,13 @@ function ShoppingCart() {
     const storedQuantities = localStorage.getItem('quantities');
     if (storedQuantities) {
       try {
-        setQuantities(JSON.parse(storedQuantities));
+        // setQuantities(JSON.parse(storedQuantities));
+        const parsedQuantities = JSON.parse(storedQuantities);
+        if (typeof parsedQuantities === 'object' && parsedQuantities !== null) {
+          setQuantities(parsedQuantities);
+        } else {
+          console.error("Invalid JSON format for quantities");
+        }
       } catch (e) {
         console.error("Failed to parse quantities from localStorage", e);
       }
@@ -37,7 +44,7 @@ function ShoppingCart() {
   // Remove item from cart
   const removeFromCart = (item) => {
     const updatedCartItems = cartItems.filter(
-      (cartItem) => cartItem.item_name !== item.item_name
+      (cartItem) => cartItem.item !== item.item
     );
     setCartItems(updatedCartItems);
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
@@ -110,35 +117,68 @@ function ShoppingCart() {
   //   }
   // }, [setCartItems]);
 
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem("cartItems");
+  };
+
+  const submitOrder = async () => {
+    const user_email = localStorage.getItem("user");
+    const orderDetails = cartItems.map((item) => ({
+      user_email,
+      orderId: orderId,
+      item_name: item.item,
+      quantity: item.quantity,
+      price: parseFloat(item.price),
+      totalPrice: totalPrice,
+      // totalPrice: parseFloat(item.price) * item.quantity,
+    }));
+
+    try {
+      const responses = await Promise.all(
+        orderItems.map((orderItem) => axios.post("/api/carts", orderItem))
+      );
+      console.log("Order submitted:", responses);
+      window.location.href = `/orderDetails?orderId=${orderId}`;
+    } catch (error) {
+      console.error("Error submitting order:", error);
+    }
+
+    clearCart(); // Clear the cart after submitting
+  };
+
   return (
     <div className="flex flex-col items-center mt-8">
+      <h2 className="flex text-2xl font-bold mb-4 ">
+        <span>Shopping Cart</span>
+        <img className="h-10 w-10 ml-2" src={sun} alt="Sun" />
+      </h2>
       <div className="flex flex-row">
         <Link to={"/specialsDeals"}>
           <span>Go back</span>
         </Link>
-        <h2 className="flex text-2xl font-bold mb-4 ">
-          <span>Shopping Cart</span>
-          <img className="h-10 w-10 ml-2" src={sun} alt="Sun" />
-        </h2>
+        <Link to={"/orders"}>
+          <span>Order History</span>
+        </Link>
       </div>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
       <div className="w-full max-w-md">
         <p className="text-lg font-bold mb-2">Order ID: {orderId}</p>
-        <table className="w-full text-left border-collapse border border-black">
+        <table className="w-full text-left border border-black">
           <thead>
             <tr>
-              <th className="px-4 py-2">Item</th>
-              <th className="px-4 py-2">Quantity</th>
-              <th className="px-4 py-2">Price</th>
+              <th className="border border-black px-4 py-2 ">Item</th>
+              <th className="border border-black px-4 py-2">Quantity</th>
+              <th className="border border-black px-4 py-2">Price</th>
             </tr>
           </thead>
           <tbody>
             {cartItems.map((item, index) => (
               <tr key={index}>
-                <td className="border px-4 py-2">{item.item}</td>
-                <td className="border px-4 py-2">
+                <td className="border border-black px-4 py-2">{item.item}</td>
+                <td className="border border-black px-4 py-2">
                   <div className="flex flex-row space-x-10 text-2xl items-center">
                       <button onClick={() => decreaseQuantity(item)}>
                         -
@@ -149,8 +189,8 @@ function ShoppingCart() {
                       </button>
                   </div>
                 </td>
-                <td className="border px-4 py-2">${item.price} per kg</td>
-                <td className="border px-4 py-2">
+                <td className="border border-black px-4 py-2">${item.price} per kg</td>
+                <td className="border border-black px-4 py-2">
                   <button
                     onClick={() => removeFromCart(item)}
                     className="bg-blue-400 hover:bg-blue-300 text-white px-2 py-1 rounded"
@@ -166,10 +206,10 @@ function ShoppingCart() {
           Total Price: ${totalPrice.toFixed(2)}
         </p>
         <div>
-          <button>
+          <button onClick={clearCart}>
             Cancle
           </button>
-          <button>
+          <button onClick={submitOrder}>
             Submit
           </button>
         </div>

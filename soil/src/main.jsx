@@ -11,6 +11,7 @@ import { CartContext } from "./SpecialsDeals.jsx";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ShoppingCart from "./ShoppingCart.jsx";
+import OrderDetails from "./orderDetails";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <ShoppingCart />,
+      },
+      {
+        path: "/orders",
+        element: <OrderDetails />,
       },
     ],
   },
