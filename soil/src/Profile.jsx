@@ -60,9 +60,21 @@ function Profile() {
   //     setError("Failed to delete account.");
   //   }
   // };// Profile.jsx
+  // const handleDelete = async () => {
+  //   try {
+  //     console.log("Deleting user with email:", userEmail); // Log the email being deleted
+  //     await deleteUser(userEmail);
+  //     alert("Your account has been deleted successfully!");
+  //     localStorage.removeItem("user");
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.error("Error deleting user account:", error);
+  //     setError("Failed to delete account.");
+  //   }
+  // };
   const handleDelete = async () => {
     try {
-      console.log("Deleting user with email:", userEmail); // Log the email being deleted
+      console.log(`Deleting user with email: ${userEmail}`);
       await deleteUser(userEmail);
       alert("Your account has been deleted successfully!");
       localStorage.removeItem("user");
