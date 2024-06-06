@@ -119,7 +119,7 @@ function ShoppingCart() {
         <span>Shopping Cart</span>
         <img className="h-10 w-10 ml-2" src={sun} alt="Sun" />
       </h2>
-      {/* {cartItems.length === 0 ? (
+      {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
       <div className="w-full max-w-md">
