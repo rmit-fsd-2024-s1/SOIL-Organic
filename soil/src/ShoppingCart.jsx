@@ -14,13 +14,7 @@ function ShoppingCart() {
     const storedQuantities = localStorage.getItem('quantities');
     if (storedQuantities) {
       try {
-        // setQuantities(JSON.parse(storedQuantities));
-        const parsedQuantities = JSON.parse(storedQuantities);
-        if (typeof parsedQuantities === 'object' && parsedQuantities !== null) {
-          setQuantities(parsedQuantities);
-        } else {
-          console.error("Invalid JSON format for quantities");
-        }
+        setQuantities(JSON.parse(storedQuantities));
       } catch (e) {
         console.error("Failed to parse quantities from localStorage", e);
       }
@@ -48,103 +42,6 @@ function ShoppingCart() {
     );
     setCartItems(updatedCartItems);
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-  };
-
-  // Increase quantity function
-  const increaseQuantity = (item) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [item.item_name]: (prevQuantities[item.item_name] || 0) + 1,
-    }));
-    
-    // setCartItems((prevCartItems) => {
-    //   return prevCartItems.map(cartItem =>
-    //     cartItem.id === item.id
-    //       ? { ...cartItem, quantity: cartItem.quantity + 1 }
-    //       : cartItem
-    //   );
-    // });
-  };
-  
-  // Decrease quantity function
-  const decreaseQuantity = (item) => {
-    setQuantities((prevQuantities) => {
-      const updatedQuantity = (prevQuantities[item.item_name] || 0) - 1;
-      if (updatedQuantity <= 0) {
-        const { [item.item_name]: _, ...rest } = prevQuantities;
-        return rest;
-      }
-      return {
-        ...prevQuantities,
-        [item.item_name]: updatedQuantity,
-      };
-    });
-
-    // setCartItems((prevCartItems) => {
-    //   return prevCartItems.map(cartItem =>
-    //     cartItem.item_name === item.item_name && cartItem.quantity > 1
-    //       ? { ...cartItem, quantity: cartItem.quantity - 1 }
-    //       : cartItem
-    //   ).filter(cartItem => cartItem.quantity > 0);
-    // });
-    // setQuantities((prevQuantities) => ({
-    //   ...prevQuantities,
-    //   [item.item_name]: Math.max((prevQuantities[item.item_name] || 0) - 1, 0),
-    // }));
-  };
-
-  // const updateCartItemQuantity = (item, change) => {
-  //   setCartItems((prevCartItems) => {
-  //     const updatedCartItems = prevCartItems.map((cartItem) => {
-  //       if (cartItem.item_name === item.item_name) {
-  //         return {
-  //           ...cartItem,
-  //           quantity: cartItem.quantity + change,
-  //         };
-  //       }
-  //       return cartItem;
-  //     });
-  //     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-  //     return updatedCartItems;
-  //   });
-  // };
-
-  // // Load cart items from local storage when the component mounts
-  // useEffect(() => {
-  //   const savedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-  //   if (savedCartItems.length > 0) {
-  //     setCartItems(savedCartItems);
-  //   }
-  // }, [setCartItems]);
-
-  const clearCart = () => {
-    setCartItems([]);
-    localStorage.removeItem("cartItems");
-  };
-
-  const submitOrder = async () => {
-    const user_email = localStorage.getItem("user");
-    const orderDetails = cartItems.map((item) => ({
-      user_email,
-      orderId: orderId,
-      item_name: item.item,
-      quantity: item.quantity,
-      price: parseFloat(item.price),
-      totalPrice: totalPrice,
-      // totalPrice: parseFloat(item.price) * item.quantity,
-    }));
-
-    try {
-      const responses = await Promise.all(
-        orderItems.map((orderItem) => axios.post("/api/carts", orderItem))
-      );
-      console.log("Order submitted:", responses);
-      window.location.href = `/orderDetails?orderId=${orderId}`;
-    } catch (error) {
-      console.error("Error submitting order:", error);
-    }
-
-    clearCart(); // Clear the cart after submitting
   };
 
   return (
@@ -179,7 +76,8 @@ function ShoppingCart() {
               <tr key={index}>
                 <td className="border border-black px-4 py-2">{item.item}</td>
                 <td className="border border-black px-4 py-2">
-                  <div className="flex flex-row space-x-10 text-2xl items-center">
+                  <div>{item.quantity}</div>
+                  {/* <div className="flex flex-row space-x-10 text-2xl items-center">
                       <button onClick={() => decreaseQuantity(item)}>
                         -
                       </button>
@@ -187,7 +85,7 @@ function ShoppingCart() {
                       <button onClick={() => increaseQuantity(item)}>
                         +
                       </button>
-                  </div>
+                  </div> */}
                 </td>
                 <td className="border border-black px-4 py-2">${item.price} per kg</td>
                 <td className="border border-black px-4 py-2">
@@ -205,14 +103,14 @@ function ShoppingCart() {
         <p className="text-lg font-bold mt-4">
           Total Price: ${totalPrice.toFixed(2)}
         </p>
-        <div>
+        {/* <div>
           <button onClick={clearCart}>
             Cancle
           </button>
           <button onClick={submitOrder}>
             Submit
           </button>
-        </div>
+        </div> */}
       </div>
       )}
     </div>
