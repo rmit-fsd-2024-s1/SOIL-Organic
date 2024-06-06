@@ -75,7 +75,7 @@ function App() {
                   <li>
                     <Link
                       to={"/cart"}
-                      className="bg-white rounded hover:bg-zinc-600 text-black "
+                      className="bg- rounded hover:bg-zinc-600 text-black "
                     >
                       <img src={cart} alt="Cart" className="icon" />
                     </Link>
