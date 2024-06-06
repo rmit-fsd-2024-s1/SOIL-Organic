@@ -24,6 +24,7 @@ db.sequelize.authenticate()
 db.user = require("./models/user.js")(db.sequelize, DataTypes);
 db.product = require("./models/products.js")(db.sequelize, DataTypes);
 db.review = require("./models/reviews.js")(db.sequelize, DataTypes);
+db.cart = require("./models/cart.js")(db.sequelize, DataTypes);
 
 // Sync database schema and seed data.
 db.sync = async () => {
