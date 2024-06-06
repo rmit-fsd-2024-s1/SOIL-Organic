@@ -106,14 +106,8 @@ function SpecialsDeals() {
             return [...prevCartItems, newCartItem];
           }
         });
-
-        setQuantities((prevQuantities) => ({
-          ...prevQuantities,
-          [item.item]: 0,
-        }));
-
-        alert("Item added to cart!");
       }
+      alert("Item added to cart!");
     };
     const [specialsData, setSpecialsData] = useState([]);
 

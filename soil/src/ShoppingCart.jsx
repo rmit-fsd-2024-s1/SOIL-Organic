@@ -58,7 +58,7 @@ function ShoppingCart() {
                 <td className="border px-4 py-2">
                   <button
                     onClick={() => removeFromCart(item)}
-                    className="bg-orange-500 text-white px-2 py-1 rounded"
+                    className="bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 rounded"
                   >
                     Remove
                   </button>

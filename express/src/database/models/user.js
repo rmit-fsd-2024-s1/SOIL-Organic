@@ -1,5 +1,5 @@
-module.exports = (sequelize, DataTypes) =>
-  sequelize.define("user", {
+module.exports = (sequelize, DataTypes) => {
+  return sequelize.define("user", {
     user_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -23,6 +23,6 @@ module.exports = (sequelize, DataTypes) =>
       defaultValue: DataTypes.NOW
     }
   }, {
-    // Don't add the timestamp attributes (updatedAt, createdAt).
     timestamps: false
   });
+};

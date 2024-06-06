@@ -1,19 +1,24 @@
+// Initialize express and app
 module.exports = (express, app) => {
   const controller = require("../controllers/user.controller.js");
   const router = express.Router();
 
-  // Select all users.
+  // Log route registration
+  console.log("Registering routes...");
+
+  // Define routes
   router.get("/", controller.all);
-
-  // Select a single user with id.
   router.get("/select/:user_id", controller.one);
-
-  // Select one user from the database if username and password are a match.
   router.get("/login", controller.login);
+  // router.get("/email", (req, res) => {
+  //   console.log("Request to /email received");
+  //   controller.findByEmail(req, res);
+  // });
+  router.get('/email', controller.findByEmail);
+  router.post("/create", controller.create);
+  router.put('/:email', controller.update);
+  router.delete('/:email', controller.delete);
 
-  // Create a new user.
-  router.post("/", controller.create);
-
-  // Add routes to server.
+  // Register routes
   app.use("/api/users", router);
 };

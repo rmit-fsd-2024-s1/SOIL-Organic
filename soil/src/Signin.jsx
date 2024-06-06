@@ -1,7 +1,7 @@
+//Signin page for users to login to their account
 import React, { useState } from "react";
-import { verifyPassword } from "./utils/hashPassword";
+import { verifyUser } from "./data/repository";
 import { useNavigate } from "react-router-dom";
-import Signup from "./Signup";
 import sun from "./img/sun.jpeg";
 import { Link } from "react-router-dom";
 
@@ -10,35 +10,40 @@ function Signin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate inputs
     if (!email || !password) {
-      setError("Please input a valid email and password.");
+      setError("Email and password are required.");
       return;
     }
 
-    // Get user from localStorage
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-    const user = users.find((u) => u.email == email);
-    if (!user) {
-      setError("No user found. Please register first.");
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!emailRegex.test(email)) {
+      setError("Invalid email format.");
       return;
     }
 
-    // Verify password
-    const isPasswordValid = verifyPassword(password, user.password);
-    if (!isPasswordValid) {
-      setError("Invalid email or password.");
-      return;
-    }
+    try {
+      const user = await verifyUser(email, password);
+      if (user) {
+        // Save email to localStorage
+        localStorage.setItem("user", JSON.stringify({ email: user.email }));
 
-    // Provide visual cue upon successful login
-    localStorage.setItem("user", JSON.stringify(user));
-    alert("Login successful!");
-    navigate("/");
+        // Provide visual cue upon successful login
+        alert("Login successful! Redirecting to your profile.");
+        navigate("/profile");
+      } else {
+        setError("Invalid email or password.");
+      }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError("An error occurred during user login.");
+      }
+    }
   };
 
   return (
