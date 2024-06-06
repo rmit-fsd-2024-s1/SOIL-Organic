@@ -28,7 +28,6 @@ function SpecialsDeals() {
         console.error('Error fetching products:', error);
 
       }
-      alert("Item added to cart!");
     };
     
     fetchProducts();
