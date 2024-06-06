@@ -6,7 +6,7 @@ module.exports = (express, app) => {
   router.get("/standard", controller.getStandardProducts);
 
   // Select a single product with id
-  router.get("/select/:item_id", controller.findOne);
+  router.get("/select/:item_name", controller.findOne);
 
   // Select special products from the database
   router.get("/special", controller.getSpecialProducts);

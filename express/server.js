@@ -40,8 +40,9 @@ db.sync()
     });
 
     require("./src/routes/user.routes.js")(express, app);
-    // require("./src/routes/review.routes.js")(express, app);
-    // require("./src/routes/product.routes.js")(express, app);
+    require("./src/routes/review.routes.js")(express, app);
+    require("./src/routes/product.routes.js")(express, app);
+    require("./src/routes/cart.routes.js")(express, app);
 
     const PORT = 4000;
     app.listen(PORT, () => {
