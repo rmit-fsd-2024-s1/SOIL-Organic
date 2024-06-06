@@ -5,6 +5,7 @@ export const CartContext = createContext();
 
 function SpecialsDeals() {
   // const [cartItems, setCartItems] = useState([]);
+
   const [standardProducts, setStandardProducts] = useState([]);
   const [specialProducts, setSpecialProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
@@ -25,7 +26,9 @@ function SpecialsDeals() {
         setSpecialProducts(specialProducts);
       } catch (error) {
         console.error('Error fetching products:', error);
+
       }
+      alert("Item added to cart!");
     };
     
     fetchProducts();

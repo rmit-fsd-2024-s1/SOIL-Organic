@@ -1,11 +1,75 @@
-.sedan-regular {
-    font-family: "Sedan", serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  .sedan-regular-italic {
-    font-family: "Sedan", serif;
-    font-weight: 400;
-    font-style: italic;
-  }
+/* app.css */
+
+/* Set global font styles */
+body {
+  font-family: Arial, Helvetica, sans-serif; /* Use common web fonts */
+  font-size: 18px; /* Set default font size */
+  line-height: 1.5; /* Set default line height */
+  color: #333; /* Set default text color */
+  background-color: #f8f9fa; /* Set default background color */
+  margin: 0; /* Remove default body margin */
+  padding: 0; /* Remove default body padding */
+}
+
+/* Global heading styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700; /* Set bold font weight for headings */
+  color: #212529; /* Set heading color */
+}
+
+/* Global paragraph styles */
+p {
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 1em; /* Set bottom margin for paragraphs */
+}
+
+/* Link styles */
+a {
+  color: #007bff; /* Set link color */
+  text-decoration: none; /* Remove default underline */
+}
+
+a:hover {
+  text-decoration: underline; /* Add underline on hover */
+  color:white
+}
+
+
+/* Icon styles */
+.icon {
+  width: 28px; /* Set icon width */
+  height: 28px; /* Set icon height */
+}
+
+/* Global input field styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  background-color: white; /* Set background color to white */
+  border: 1px solid rgb(82, 82, 232); /* Set border color to orange */
+  border-radius: 18px; /* Set border radius to make inputs round */
+  padding: 8px 16px; /* Set padding */
+  width: 100%; /* Set width to 100% */
+  box-sizing: border-box; /* Ensure padding and border are included in the total width and height */
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  outline: none; /* Remove default focus outline */
+  border-color: rgb(96, 96, 227); /* Set border color on focus */
+}
+
+/* Error message styling */
+.error-message {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5; /* Adjust this value to control the line height */
+  max-height: 3em; /* 2 lines * line-height */
+}

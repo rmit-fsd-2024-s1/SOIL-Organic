@@ -5,7 +5,6 @@ import "./index.css";
 import Signin from "./Signin.jsx";
 import Home from "./Home.jsx";
 import Signup from "./Signup.jsx";
-import AuthPage from "./AuthPage.jsx";
 import Profile from "./Profile.jsx";
 import SpecialsDeals from "./SpecialsDeals.jsx";
 import { CartContext } from "./SpecialsDeals.jsx";

@@ -1,10 +1,10 @@
-// App.jsx
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import Account from "./img/my_account.png";
 import "./app.css";
 import sun from "./img/sun.jpeg";
 import { useState, useEffect } from "react";
 import { CartContext } from "./SpecialsDeals";
+import cart from "./img/cart.png";
 
 function App() {
   const navigate = useNavigate();
@@ -28,22 +28,35 @@ function App() {
     }
   }, []);
 
-  // Store the cartItems in local storage whenever cartItems changes
-  // useEffect(() => {
-  //   localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  // }, [cartItems]);
+  const [email, setEmail] = useState("");
+  const [userEmail, setUserEmail] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  // useEffect(() => {
-  //   const savedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-  //   if (savedCartItems.length > 0) {
-  //     setCartItems(savedCartItems);
-  //   }
-  // }, [setCartItems, cartUpdated]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const user = await findByEmail(email);
+      if (user) {
+        setUserEmail(user.email);
+      } else {
+        setError("User not found");
+      }
+    } catch (err) {
+      console.error("Error fetching user email:", err);
+      setError("Error fetching user email");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <CartContext.Provider value={{ cartItems, setCartItems }}>
       <div className="flex flex-col min-h-screen bg-[#eae2cf] sedan-regular">
-        <header className="h-12 bg-orange-600 text-white">
+        <header className="h-12 bg-blue-300 text-white">
           <ul className="flex items-center justify-between h-full px-4">
             <li className="text-xl flex items-center">
               <Link to={"/"} className="flex items-center">
@@ -51,26 +64,26 @@ function App() {
                 <img className="h-10 w-10 ml-2" src={sun} alt="Sun" />
               </Link>
             </li>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-4">
               {user ? (
                 <>
                   <li>
-                    <Link to={"/profile"} className="hover:bg-zinc-600">
-                      <img src={Account} alt="" className="py-2 px-2" />
+                    <Link to={"/profile"} className="hover:bg-blue-200">
+                      <img src={Account} alt="Profile" className="icon" />
                     </Link>
                   </li>
                   <li>
                     <Link
                       to={"/cart"}
-                      className="bg-[#eae2cf] px-3 rounded hover:bg-zinc-600 text-black "
+                      className="bg-white rounded hover:bg-zinc-600 text-black "
                     >
-                      Shopping Cart
+                      <img src={cart} alt="Cart" className="icon" />
                     </Link>
                   </li>
                   <li>
                     <button
                       onClick={handleLogout}
-                      className="bg-[#eae2cf] px-3 py-2 rounded hover:bg-zinc-600 text-black"
+                      className="bg-white px-3 py-2 rounded hover:bg-blue-200 text-black"
                     >
                       Log Out
                     </button>
@@ -80,7 +93,7 @@ function App() {
                 <li>
                   <Link
                     to={"/signin"}
-                    className="bg-[#eae2cf] px-3 py-2 rounded hover:bg-zinc-600 text-black"
+                    className="bg-white px-3 py-2 rounded hover:bg-blue-200 text-black"
                   >
                     Sign In
                   </Link>
@@ -88,11 +101,17 @@ function App() {
               )}
             </div>
           </ul>
+          <div>
+            <form onSubmit={handleSubmit}></form>
+            {loading && <p>Loading...</p>}
+            {error && <p>{error}</p>}
+            {userEmail && <Profile email={userEmail} />}
+          </div>
         </header>
         <div className="flex-grow">
           <Outlet />
         </div>
-        <footer className="h-8 flex items-center justify-center bg-orange-600 text-white">
+        <footer className="h-10 flex items-center justify-center bg-blue-300 text-white">
           &copy;2024 SOIL
         </footer>
       </div>
