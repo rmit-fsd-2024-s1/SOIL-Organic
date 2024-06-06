@@ -72,45 +72,8 @@ exports.create = async (req, res) => {
   }
 };
 
-// Update a user in the database
-// exports.update = async (req, res) => {
-//   try {
-//     const { username, email, password } = req.body;
-//     if (!email || !username || !password) {
-//       return res.status(400).json({ error: 'Username, email, and password are required.' });
-//     }
 
-//     const hash = await argon2.hash(password, { type: argon2.argon2id });
 
-//     const user = await db.user.findOne({ where: { email: req.params.email } });
-//     if (user) {
-//       user.username = username;
-//       user.email = email;
-//       user.password_hash = hash;
-//       await user.save();
-//       res.json(user);
-//     } else {
-//       res.status(404).json({ error: 'User not found.' });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ error: 'An error occurred while updating the user.' });
-//   }
-// };
-
-// // Delete a user from the database
-// exports.delete = async (req, res) => {
-//   try {
-//     const user = await db.user.findOne({ where: { email: req.params.email } });
-//     if (user) {
-//       await user.destroy();
-//       res.json({ message: 'User deleted successfully.' });
-//     } else {
-//       res.status(404).json({ error: 'User not found.' });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ error: 'An error occurred while deleting the user.' });
-//   }
-// };
 
 exports.findByEmail = async (req, res) => {
   try {
@@ -130,26 +93,7 @@ exports.findByEmail = async (req, res) => {
   }
 };
 
-// exports.update = async (req, res) => {
-//   try {
-//     const { username, email, password } = req.body;
-//     const user = await db.User.findOne({ where: { email: req.params.email } });
-//     if (user) {
-//       if (password) {
-//         user.password_hash = await argon2.hash(password, { type: argon2.argon2id });
-//       }
-//       user.username = username;
-//       user.email = email;
-//       await user.save();
-//       res.json(user);
-//     } else {
-//       res.status(404).json({ error: 'User not found.' });
-//     }
-//   } catch (error) {
-//     console.error('Error updating user:', error);
-//     res.status(500).json({ error: 'An error occurred while updating the user.' });
-//   }
-// };
+
 
 exports.update = async (req, res) => {
   try {
@@ -184,5 +128,6 @@ exports.delete = async (req, res) => {
   } catch (error) {
     console.error('Error deleting user:', error);
     res.status(500).json({ error: 'An error occurred while deleting the user.' });
+
   }
 };

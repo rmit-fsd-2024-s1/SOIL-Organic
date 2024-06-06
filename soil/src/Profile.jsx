@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   getUser,
@@ -137,6 +138,7 @@ function Profile() {
           <div className="py-2">
             <label>Join Date: {new Date(joinDate).toLocaleDateString()}</label>
           </div>
+
         </div>
         {!isEditing && (
           <div className="flex space-x-5 ">
