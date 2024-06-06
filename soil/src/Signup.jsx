@@ -73,15 +73,15 @@ function Signup() {
 
   return (
     <div>
-      <div className="flex items-center justify-center pb-20 py-20">
-        <h1 className="text-3xl text-orange-600 font-bold flex items-center">
+      <div className="flex items-center justify-center mb-8">
+        <h1 className="text-3xl text-blue-500 font-bold flex items-center mb-10 mt-10">
           <span>Welcome to SOIL!</span>
           <img className="h-10 w-10 ml-2" src={sun} alt="Sun" />
         </h1>
       </div>
-      <div className="flex flex-col items-center w-full justify-center h-60 text-xl">
-        <div className="w-64 ">
-          <h1 className="flex flex-col items-center py-8">
+      <div className="flex flex-col items-center w-full justify-center h-60 py-10 mt-20 text-xl">
+        <div className="w-96 ">
+          <h1 className="flex flex-col items-center">
             <strong>Create an Account</strong>
           </h1>
           <form onSubmit={handleSubmit}>
@@ -125,11 +125,11 @@ function Signup() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
-            {error && <p className="font-bold text-orange-700">{error}</p>}
+            {error && <p className="font-bold text-blue-500 ">{error}</p>}
             <br></br>
             <button
               type="submit"
-              className="hover:bg-orange-500 bg-orange-400 text-white px-6 py-3 rounded w-full"
+              className="hover:bg-blue-300 bg-blue-400 text-white px-6 py-3 rounded w-full"
             >
               Create Account
             </button>

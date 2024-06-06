@@ -49,14 +49,14 @@ function Signin() {
   return (
     <div className="flex flex-col justify-center">
       <div className="flex items-center justify-center pb-20 py-20">
-        <h1 className="text-3xl text-orange-600 font-bold flex items-center">
+        <h1 className="text-3xl text-blue-500 font-bold flex items-center">
           <span>Welcome to SOIL!</span>
           <img className="h-10 w-10 ml-2" src={sun} alt="Sun" />
         </h1>
       </div>
 
       <div className="flex flex-col items-center w-full h-60 justify-center text-xl ">
-        <div className="w-64">
+        <div className="w-96">
           <h1 className="flex flex-col md:flex-row justify-center items-center">
             Sign In
           </h1>
@@ -81,16 +81,16 @@ function Signin() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            {error && <p className="font-bond text-orange-700">{error}</p>}
+            {error && <p className="font-bond text-blue-500">{error}</p>}
             <br></br>
             <button
               type="submit"
-              className="hover:bg-orange-500 bg-orange-400 text-white px-6 py-3 mb-5 rounded w-full"
+              className="hover:bg-blue-300 bg-blue-400 text-white px-6 py-3 mb-5 rounded w-full"
             >
               Log In
             </button>
             <Link to="/signup">
-              <p className="text-center text-orange-500 ">
+              <p className="text-center text-blue-500 ">
                 Don't have an account? Sign Up
               </p>
             </Link>
