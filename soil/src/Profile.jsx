@@ -49,8 +49,20 @@ function Profile() {
     setConfirmPassword("");
   };
 
+  // const handleDelete = async () => {
+  //   try {
+  //     await deleteUser(userEmail);
+  //     alert("Your account has been deleted successfully!");
+  //     localStorage.removeItem("user");
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.error("Error deleting user account:", error);
+  //     setError("Failed to delete account.");
+  //   }
+  // };// Profile.jsx
   const handleDelete = async () => {
     try {
+      console.log("Deleting user with email:", userEmail); // Log the email being deleted
       await deleteUser(userEmail);
       alert("Your account has been deleted successfully!");
       localStorage.removeItem("user");
@@ -109,7 +121,7 @@ function Profile() {
     };
 
     try {
-      await updateUser(user.email, updatedUser);
+      await updateUser(userEmail, updatedUser);
       alert("Profile updated successfully!");
       setIsEditing(false);
       setUser({ ...updatedUser, date_of_joining: joinDate });

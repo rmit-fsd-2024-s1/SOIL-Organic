@@ -1,3 +1,4 @@
+//user controller
 const db = require("../database");
 const argon2 = require("argon2");
 
@@ -78,7 +79,7 @@ exports.findByEmail = async (req, res) => {
     if (!email) {
       return res.status(400).json({ error: 'Email parameter is required' });
     }
-    const user = await db.User.findOne({ where: { email: email } });
+    const user = await db.user.findOne({ where: { email } });
     if (user) {
       res.json(user);
     } else {
@@ -94,7 +95,7 @@ exports.findByEmail = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    const user = await db.User.findOne({ where: { email: req.params.email } });
+    const user = await db.user.findOne({ where: { email: req.params.email } });
     if (user) {
       if (password) {
         user.password_hash = await argon2.hash(password, { type: argon2.argon2id });
@@ -113,13 +114,32 @@ exports.update = async (req, res) => {
 };
 
 // Delete user
+// exports.delete = async (req, res) => {
+//   try {
+//     const user = await db.User.findOne({ where: { email: req.params.email } });
+//     if (user) {
+//       await user.destroy();
+//       res.json({ message: 'User deleted successfully.' });
+//     } else {
+//       res.status(404).json({ error: 'User not found.' });
+//     }
+//   } catch (error) {
+//     console.error('Error deleting user:', error);
+//     res.status(500).json({ error: 'An error occurred while deleting the user.' });
+//   }
+// };
 exports.delete = async (req, res) => {
   try {
-    const user = await db.User.findOne({ where: { email: req.params.email } });
+    const email = req.params.email;
+    console.log("Delete request received for email:", email); // Log the email parameter
+
+    const user = await db.User.findOne({ where: { email: email } });
     if (user) {
+      console.log("User found:", user);
       await user.destroy();
       res.json({ message: 'User deleted successfully.' });
     } else {
+      console.log("User not found.");
       res.status(404).json({ error: 'User not found.' });
     }
   } catch (error) {
