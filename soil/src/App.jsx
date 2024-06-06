@@ -56,7 +56,7 @@ function App() {
   return (
     <CartContext.Provider value={{ cartItems, setCartItems }}>
       <div className="flex flex-col min-h-screen bg-[#eae2cf] sedan-regular">
-        <header className="h-12 bg-orange-600 text-white">
+        <header className="h-12 bg-blue-300 text-white">
           <ul className="flex items-center justify-between h-full px-4">
             <li className="text-xl flex items-center">
               <Link to={"/"} className="flex items-center">
@@ -68,14 +68,14 @@ function App() {
               {user ? (
                 <>
                   <li>
-                    <Link to={"/profile"} className="hover:bg-zinc-600">
+                    <Link to={"/profile"} className="hover:bg-blue-200">
                       <img src={Account} alt="Profile" className="icon" />
                     </Link>
                   </li>
                   <li>
                     <Link
                       to={"/cart"}
-                      className="bg-[#eae2cf] rounded hover:bg-zinc-600 text-black "
+                      className="bg-white rounded hover:bg-zinc-600 text-black "
                     >
                       <img src={cart} alt="Cart" className="icon" />
                     </Link>
@@ -83,7 +83,7 @@ function App() {
                   <li>
                     <button
                       onClick={handleLogout}
-                      className="bg-[#eae2cf] px-3 py-2 rounded hover:bg-zinc-600 text-black"
+                      className="bg-white px-3 py-2 rounded hover:bg-blue-200 text-black"
                     >
                       Log Out
                     </button>
@@ -93,7 +93,7 @@ function App() {
                 <li>
                   <Link
                     to={"/signin"}
-                    className="bg-[#eae2cf] px-3 py-2 rounded hover:bg-zinc-600 text-black"
+                    className="bg-white px-3 py-2 rounded hover:bg-blue-200 text-black"
                   >
                     Sign In
                   </Link>
@@ -111,7 +111,7 @@ function App() {
         <div className="flex-grow">
           <Outlet />
         </div>
-        <footer className="h-8 flex items-center justify-center bg-orange-600 text-white">
+        <footer className="h-10 flex items-center justify-center bg-blue-300 text-white">
           &copy;2024 SOIL
         </footer>
       </div>

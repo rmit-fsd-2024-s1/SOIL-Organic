@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   getUser,
@@ -124,7 +123,7 @@ function Profile() {
   return (
     <div className="flex items-center justify-center flex-col mt-10">
       <div className="flex flex-col items-center justify-center w-max ">
-        <h2 className="text-2xl text-orange-600">
+        <h2 className="text-2xl text-blue-500">
           <strong>{user ? user.username : ""}'s Profile</strong>
         </h2>
         <div className="flex flex-col mt-8">
@@ -138,19 +137,18 @@ function Profile() {
           <div className="py-2">
             <label>Join Date: {new Date(joinDate).toLocaleDateString()}</label>
           </div>
-
         </div>
         {!isEditing && (
           <div className="flex space-x-5 ">
             <button
               onClick={handleEdit}
-              className="hover:bg-orange-600 bg-orange-500 text-white px-10 py-3 rounded mt-4"
+              className="hover:bg-blue-300 bg-blue-400 text-white px-10 py-3 rounded mt-4"
             >
               Edit Profile
             </button>
             <button
               onClick={handleDelete}
-              className="hover:bg-orange-600 bg-orange-500 text-white px-10 py-3 rounded mt-4"
+              className="hover:bg-blue-300 bg-blue-400 text-white px-10 py-3 rounded mt-4"
             >
               Delete Profile
             </button>
@@ -197,18 +195,18 @@ function Profile() {
                 className="mt-1 block w-full rounded-md bg-white focus:border-gray-500 focus:bg-white focus:ring-0"
               />
             </div>
-            {error && <p className="font-bold text-orange-700">{error}</p>}
+            {error && <p className=" text-blue-600">{error}</p>}
             <div className="flex justify-center space-x-4 mt-4 w-full">
               <button
                 type="submit"
-                className="hover:bg-orange-600 bg-orange-500 text-white px-6 py-3 rounded w-full"
+                className="hover:bg-blue-300 bg-blue-400 text-white px-6 py-3 rounded w-full"
               >
                 Save
               </button>
               <button
                 type="button"
                 onClick={handleCancel}
-                className="hover:bg-orange-600 bg-orange-500 text-white px-6 py-3 rounded w-full"
+                className="hover:bg-blue-300 bg-blue-400 text-white px-6 py-3 rounded w-full"
               >
                 Cancel
               </button>

@@ -2,6 +2,7 @@
 
 import React, { useContext, useEffect } from "react";
 import { CartContext } from "./SpecialsDeals";
+import sun from "./img/sun.jpeg";
 
 function ShoppingCart() {
   const { cartItems, setCartItems } = useContext(CartContext);
@@ -35,7 +36,10 @@ function ShoppingCart() {
 
   return (
     <div className="flex flex-col items-center mt-8">
-      <h2 className="text-2xl font-bold mb-4">Shopping Cart</h2>
+      <h2 className="flex text-2xl font-bold mb-4 ">
+        <span>Shopping Cart</span>
+        <img className="h-10 w-10 ml-2" src={sun} alt="Sun" />
+      </h2>
       {/* {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : ( */}
@@ -58,7 +62,7 @@ function ShoppingCart() {
                 <td className="border px-4 py-2">
                   <button
                     onClick={() => removeFromCart(item)}
-                    className="bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 rounded"
+                    className="bg-blue-400 hover:bg-blue-300 text-white px-2 py-1 rounded"
                   >
                     Remove
                   </button>
