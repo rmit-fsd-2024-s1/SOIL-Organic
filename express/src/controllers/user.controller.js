@@ -128,15 +128,40 @@ exports.update = async (req, res) => {
 //     res.status(500).json({ error: 'An error occurred while deleting the user.' });
 //   }
 // };
+// exports.delete = async (req, res) => {
+//   try {
+//     const email = req.params.email;
+//     console.log("Delete request received for email:", email); // Log the email parameter
+
+//     const user = await db.User.findOne({ where: { email: email } });
+//     if (user) {
+//       console.log("User found:", user);
+//       await user.destroy();
+//       res.json({ message: 'User deleted successfully.' });
+//     } else {
+//       console.log("User not found.");
+//       res.status(404).json({ error: 'User not found.' });
+//     }
+//   } catch (error) {
+//     console.error('Error deleting user:', error);
+//     res.status(500).json({ error: 'An error occurred while deleting the user.' });
+//   }
+// };
+
 exports.delete = async (req, res) => {
   try {
+    console.log(`Delete request received for email: ${req.params.email}`);
     const email = req.params.email;
-    console.log("Delete request received for email:", email); // Log the email parameter
+    if (!email) {
+      console.log("Email parameter is missing.");
+      return res.status(400).json({ error: 'Email parameter is required' });
+    }
 
-    const user = await db.User.findOne({ where: { email: email } });
+    const user = await db.user.findOne({ where: { email: email } });
     if (user) {
-      console.log("User found:", user);
+      console.log(`User found: ${user.email}`);
       await user.destroy();
+      console.log(`User deleted: ${user.email}`);
       res.json({ message: 'User deleted successfully.' });
     } else {
       console.log("User not found.");
