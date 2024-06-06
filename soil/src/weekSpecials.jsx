@@ -5,7 +5,6 @@ import { getSpecialProducts } from "./data/repository";
 
 function WeekSpecials() {
   const [specialProducts, setSpecialProducts] = useState([]);
-  // const [specialsData, setSpecialsData] = useState([]);
 
   useEffect(() => {
     const fetchSpecialProducts = async () => {
